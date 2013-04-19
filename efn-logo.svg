@@ -40,6 +40,6 @@
 <circle cx="25.60254"  cy="60" r="5" fill="white" stroke="black" stroke-width="3"/>
 <circle cx="60"        cy="25.60254" r="5" fill="white" stroke="black" stroke-width="3" />
 
-
+<polygon points="30,77 81,77 81,87 44,87 44,104 78,104 78,115 44,115 44,134 86,134 86,77 150,77 179,121 179,77 191,77 191,144 179,144 150,99 150,144 137,144 137,87 101,87 101,104 128,104 128,115 101,115 101,145 30,145 " fill="black" stroke="white" stroke-width="2" />
 
 </svg>
