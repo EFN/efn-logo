@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- <?php
+function Get_Client_Prefered_Language ($getSortedList = false, $acceptedLanguages = false)
+{
+
+  if (empty($acceptedLanguages))
+    $acceptedLanguages = $_SERVER["HTTP_ACCEPT_LANGUAGE"];
+
+  // regex inspired from @GabrielAnderson on http://stackoverflow.com/questions/6038236/http-accept-language
+  preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})*)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i', $acceptedLanguages, $lang_parse);
+  $langs = $lang_parse[1];
+  $ranks = $lang_parse[4];
+
+
+  // (create an associative array 'language' => 'preference')
+  $lang2pref = array();
+  for($i=0; $i<count($langs); $i++)
+    $lang2pref[$langs[$i]] = (float) (!empty($ranks[$i]) ? $ranks[$i] : 1);
+
+  // (comparison function for uksort)
+  $cmpLangs = function ($a, $b) use ($lang2pref) {
+    if ($lang2pref[$a] > $lang2pref[$b])
+      return -1;
+    elseif ($lang2pref[$a] < $lang2pref[$b])
+      return 1;
+    elseif (strlen($a) > strlen($b))
+      return -1;
+    elseif (strlen($a) < strlen($b))
+      return 1;
+    else
+      return 0;
+  };
+
+  // sort the languages by prefered language and by the most specific region
+  uksort($lang2pref, $cmpLangs);
+
+  if ($getSortedList)
+    return $lang2pref;
+
+  // return the first value's key
+  reset($lang2pref);
+  return key($lang2pref);
+}
+function Get_Best_Language_Match($candidateLangs=array('en'), $getSortedList = false) {
+  $candidates = Get_Client_Prefered_Language(true);
+  $matches=array();
+  foreach (array_keys($candidates) as $key) {
+    if (in_array($key,$candidateLangs)) {
+      if (! $getSortedList)
+	return $key;
+      $matches[$key]=$candidates[$key];
+    }
+  }
+  return $matches;
+}
+$lang = Get_Best_Language_Match(array('no','en'));
+
+if (!$lang)
+  $lang='en';
+
+if ($lang=='en') {
+  $language=array(
+  'title' => 'The logos of EFN',
+  'Transparencypattern' => 'Transparency pattern',
+  'Solid' => 'Solid',
+  'Checkered' => 'Checkered',
+  'Vectorized' => 'Vectorized',
+  'Bitmap' => 'Bitmap',
+    );
+}
+elseif ($lang=='no') {
+  $language=array(
+  'title' => 'EFNs logoer',
+  'Transparencypattern' => 'Bakgrunnsmønster for gjennomsiktighet',
+  'Solid' => 'Ensfarget',
+  'Checkered' => 'Sjakkrutet',
+  'Vectorized' => 'Vektorisert',
+  'Bitmap' => 'Bitmap',
+    );
+}
+?> -->
+<title>The logos of EFN</title>
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+img, td.example {
+    background-image: linear-gradient(45deg, #808080 25.01%, transparent 25.01%), linear-gradient(-45deg, #808080 25.01%, transparent 25.01%), linear-gradient(45deg, transparent 75.01%, #808080 75.01%), linear-gradient(-45deg, transparent 75.01%, #808080 75.01%);
+    background-size: 40px 40px;
+    background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+    color: black;
+    font-size: 40px;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-width: 3px;
+    -webkit-text-stroke-color: black;
+}
+.input {
+    background-image: none;
+    background-color: white;
+}
+</style>
+</head>
+<body>
+<h1>The logos of EFN</h1>
+<form action="">
+<table>
+  <tr>
+    <th colspan="3">Transparency pattern</th>
+  </tr>
+  <tr>
+    <td class="input">
+      <input type="radio" id="backgroundTypeSolid"
+      name="backgroundType" value="solid" onchange="backgroundChanged()" >Solid<br>
+      <input type="radio" id="backgroundTypeCheckered"
+      name="backgroundType" value="checker"
+      onchange="backgroundChanged()" checked>Checkered<br>
+    </td>
+    <td class="input">
+      <input type="color" id="primaryColor"
+      onchange="backgroundChanged()" value="#808080">
+      <span id="primaryColorText"></span>
+      <input type="color" id="secondaryColor"
+      onchange="backgroundChanged()" value="#ffffff">
+      <span id="secondaryColorText"></span>
+      <input type="range" min="2" max="100" value="8" class="slider"
+      id="patternSize" oninput="backgroundChanged()" onchange="backgroundChanged()" step="2">
+    </td>
+    <td class="example">
+      <strong>Transparency pattern example</strong>
+    </td>
+  </tr>
+</table>
+</form>
+
+<h2>Vectorized</h2>
+<h3>SVG</h3>
+
+<table>
+<!-- <?php
+$dirname='vectorized';
+$dir = new DirectoryIterator($dirname);
+foreach ($dir as $fileinfo) {
+    if ($fileinfo->getExtension()=='svg') {
+      $fullname=$dirname.DIRECTORY_SEPARATOR.$fileinfo->getFilename();
+      print '<tr><td><a href="'. $fullname .'"><img src="'.$fullname.'"/></a></td></tr>
+';
+    }
+}
+?> -->
+<tr><td><a href="vectorized/efnlogo-horizontal-text.svg"><img src="vectorized/efnlogo-horizontal-text.svg"/></a></td></tr>
+<tr><td><a href="vectorized/efnlogo-vertical-text.svg"><img src="vectorized/efnlogo-vertical-text.svg"/></a></td></tr>
+<tr><td><a href="vectorized/efnlogo.svg"><img src="vectorized/efnlogo.svg"/></a></td></tr>
+</table>
+<h3>EPS</h3>
+
+<table>
+<!-- <?php
+$dirname='vectorized';
+$dir = new DirectoryIterator($dirname);
+foreach ($dir as $fileinfo) {
+    if ($fileinfo->getExtension()=='eps') {
+      $fullname=$dirname.DIRECTORY_SEPARATOR.$fileinfo->getFilename();
+      $placeholder=$dirname.DIRECTORY_SEPARATOR.$fileinfo->getBasename('.eps').'.svg';
+      if ( file_exists( $placeholder)) {
+	print '<tr><td><a href="'. $fullname .'"><img src="'.$placeholder.'"/></a></td></tr>
+';
+      }
+    }
+}
+?> -->
+<tr><td><a href="vectorized/efnlogo.eps"><img src="vectorized/efnlogo.svg"/></a></td></tr>
+</table>
+<h2>Bitmap</h2>
+<h3>PNG</h3>
+<table>
+<!-- <?php
+$dirname='bitmap';
+$dir = new DirectoryIterator($dirname);
+foreach ($dir as $fileinfo) {
+    if ($fileinfo->getExtension()=='png') {
+      $fullname=$dirname.DIRECTORY_SEPARATOR.$fileinfo->getFilename();
+      print '<tr><td><a href="'. $fullname .'"><img src="'.$fullname.'"/></a></td></tr>
+';
+    }
+}
+?> -->
+<tr><td><a href="bitmap/efnlogo-horizontal-text-1280x224.png"><img src="bitmap/efnlogo-horizontal-text-1280x224.png"/></a></td></tr>
+<tr><td><a href="bitmap/efnlogo-vertical-text-300x100.png"><img src="bitmap/efnlogo-vertical-text-300x100.png"/></a></td></tr>
+<tr><td><a href="bitmap/efnlogo-vertical-text-580x224.png"><img src="bitmap/efnlogo-vertical-text-580x224.png"/></a></td></tr>
+<tr><td><a href="bitmap/efnlogo.png"><img src="bitmap/efnlogo.png"/></a></td></tr>
+</table>
+<script>
+//<![CDATA[
+function getSelector(className) {
+    var classes = document.styleSheets[0].rules || document.styleSheets[0].cssRules;
+    for (var x = 0; x < classes.length; x++) {
+        if (classes[x].selectorText == className) {
+           return classes[x];
+        }
+    }
+}
+function backgroundChanged() {
+  var bgRule=getSelector('img, td.example');
+  var primaryColor = document.getElementById("primaryColor").value;
+  var primaryColorText = document.getElementById("primaryColorText");
+  primaryColorText.textContent=primaryColor;
+  var secondaryColorPicker = document.getElementById("secondaryColor");
+  var secondaryColor = secondaryColorPicker.value;
+  var secondaryColorText = document.getElementById("secondaryColorText");
+  secondaryColorText.textContent=secondaryColor;
+  var patternSizeSlider = document.getElementById("patternSize");
+  var patternSize = patternSizeSlider.value;
+  var checkered=document.getElementById("backgroundTypeCheckered").checked;
+  if (checkered) {
+    var pH=patternSize/2;
+    secondaryColorPicker.style.visibility='visible';
+    secondaryColorText.style.visibility='visible';
+    patternSizeSlider.style.visibility='visible';
+
+    bgRule.style['background-image']=`linear-gradient(45deg, ${primaryColor} 25.01%, transparent 25.01%), linear-gradient(-45deg, ${primaryColor} 25.01%, transparent 25.01%), linear-gradient(45deg, transparent 75.01%, ${primaryColor} 75.01%), linear-gradient(-45deg, transparent 75.01%, ${primaryColor} 75.01%)`;
+    bgRule.style['background-size']=`${patternSize}px ${patternSize}px`;
+    bgRule.style['background-position']=`0px 0px, 0px ${pH}px, ${pH}px
+    -${pH}px, -${pH}px 0px`;
+    bgRule.style['background-color']=secondaryColor;
+  }
+  else {
+    secondaryColorPicker.style.visibility='hidden';
+    secondaryColorText.style.visibility='hidden';
+    patternSizeSlider.style.visibility='hidden';
+
+    bgRule.style['background-image']='none';
+    bgRule.style['background-color']=primaryColor;
+  }
+}
+backgroundChanged();
+//]]>
+</script>
+</body>
+</html>
+
